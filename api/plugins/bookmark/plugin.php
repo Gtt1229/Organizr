@@ -1,7 +1,7 @@
 <?php
 // PLUGIN INFORMATION
 $GLOBALS['plugins']['Bookmark'] = array( // Plugin Name
-	'name' => 'Bookmark', // Plugin Name
+	'name' => 'Bookmark2', // Plugin Name
 	'author' => 'leet1994', // Who wrote the plugin
 	'category' => 'Utilities', // One to Two Word Description
 	'link' => '', // Link to plugin info
