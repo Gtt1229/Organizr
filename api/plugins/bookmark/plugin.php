@@ -107,7 +107,8 @@ class Bookmark extends Organizr
 					`group_id`	INTEGER,
 					`image`	TEXT,
 					`background_color` TEXT,
-					`text_color` TEXT
+					`text_color` TEXT,
+					`target` TEXT
 				);'
 			)
 		];
@@ -174,7 +175,8 @@ class Bookmark extends Organizr
 				</div>
 				<div class="BOOKMARK-category-content">';
 			foreach ($tabs as $tab) {
-				$bookmarks .= '<a href="' . $tab['url'] . '" target="_BLANK">
+				$target = isset($tab['target']) && $tab['target'] ? $tab['target'] : '_BLANK';
+				$bookmarks .= '<a href="' . $tab['url'] . '" target="' . $target . '">
 					<div class="BOOKMARK-tab"
 						style="border-color: ' . $this->adjustBrightness($tab['background_color'], 0.3) . '; background: linear-gradient(90deg, ' . $this->adjustBrightness($tab['background_color'], -0.3) . ' 0%, ' . $tab['background_color'] . ' 70%, ' . $this->adjustBrightness($tab['background_color'], 0.1) . ' 100%);">
 						<span class="BOOKMARK-tab-image">' . $this->_iconPrefix($tab['image']) . '</span>
@@ -372,6 +374,13 @@ class Bookmark extends Organizr
 					<label class="control-label" for="new-bookmark-tab-form-inputURL" lang="en">Tab URL</label>
 					<input type="text" class="form-control" id="new-bookmark-tab-form-inputURL" name="url"  required="">
 				</div>
+				<div class="form-group">
+					<label class="control-label" for="new-bookmark-tab-form-inputTarget" lang="en">Open In</label>
+					<select class="form-control" id="new-bookmark-tab-form-inputTarget" name="target">
+						<option value="_BLANK" selected>New Tab</option>
+						<option value="_SELF">Same Tab</option>
+					</select>
+				</div>
 				<div class="row">
 					<div class="form-group col-lg-4">
 						<label class="control-label" for="new-bookmark-tab-form-chooseImage" lang="en">Choose Image</label>
@@ -422,6 +431,13 @@ class Bookmark extends Organizr
 				<div class="form-group">
 					<label class="control-label" for="edit-bookmark-tab-form-inputURL" lang="en">Tab URL</label>
 					<input type="text" class="form-control" id="edit-bookmark-tab-form-inputURL" name="url"  required="">
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="edit-bookmark-tab-form-inputTarget" lang="en">Open In</label>
+					<select class="form-control" id="edit-bookmark-tab-form-inputTarget" name="target">
+						<option value="_BLANK">New Tab</option>
+						<option value="_SELF">Same Tab</option>
+					</select>
 				</div>
 				<div class="row">
 					<div class="form-group col-lg-4">
@@ -565,6 +581,7 @@ class Bookmark extends Organizr
 		$array['category_id'] = ($array['category_id']) ?? $this->_getDefaultBookmarkCategoryId();
 		$array['enabled'] = ($array['enabled']) ?? 0;
 		$array['order'] = ($array['order']) ?? $this->_getNextBookmarkTabOrder() + 1;
+		$array['target'] = ($array['target']) ?? '_BLANK';
 		if (array_key_exists('name', $array)) {
 			$array['name'] = $this->sanitizeUserString($array['name']);
 			if ($this->_isBookmarkTabNameTaken($array['name'])) {

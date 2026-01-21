@@ -168,6 +168,7 @@ function editBookmarkTabForm(id){
 			$('#edit-bookmark-tab-form [name=image]').val(response.data.image);
 			$('#edit-bookmark-tab-form [name=background_color]').val(response.data.background_color).change();
 			$('#edit-bookmark-tab-form [name=text_color]').val(response.data.text_color).change();
+			$('#edit-bookmark-tab-form [name=target]').val(response.data.target || '_BLANK');
 			$('#edit-bookmark-tab-form [name=id]').val(response.data.id);
 			if( response.data.url.indexOf('/?v') > 0){
 				$('#edit-bookmark-tab-form [name=url]').prop('disabled', 'true');
