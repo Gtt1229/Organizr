@@ -52,6 +52,8 @@ class Bookmark extends Organizr
 			if (!$this->_checkDatabaseTablesExist()) {
 				$this->_createDatabaseTables();
 			}
+			// Check and add target column if it doesn't exist
+			$this->_checkAndAddTargetColumn();
 			$result = true;
 		}
 		return $result;
@@ -113,6 +115,20 @@ class Bookmark extends Organizr
 			)
 		];
 		$this->processQueries($response);
+	}
+
+	protected function _checkAndAddTargetColumn()
+	{
+		// Check if target column exists in BOOKMARK-tabs table
+		$columnExists = $this->checkIfColumnExists('BOOKMARK-tabs', 'target');
+		if (!$columnExists) {
+			// Add the target column with default value
+			$added = $this->addColumnToDatabase('BOOKMARK-tabs', 'target', 'TEXT DEFAULT \'_BLANK\'');
+			if ($added) {
+				$this->setLoggerChannel('Bookmark')->info('Added target column to BOOKMARK-tabs table');
+			}
+		}
+		return true;
 	}
 
 	public function _getSettings()
